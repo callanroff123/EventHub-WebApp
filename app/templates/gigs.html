@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+{% block styles %}
+{% endblock %}
+{% block content %}
+    <div class="main-container text-colour">
+        <div class="new-top-content">
+            <div class="wrapper-event-hub-logo">
+                <div class="event-hub-logo" style="text-align: center; padding-right: 10px;">
+                    <img src="{{ url_for('static', filename = 'web_icon/android-chrome-192x192.png') }}" style="width: 200px; height: 200px;">
+                    <br>
+                    <br>
+                    <p>
+                        <em>Connecting you to your next good memory </em> 🙌
+                    </p>
+                </div>
+            </div>
+            <div class="gig-filter-wrapper" style="padding-left: 20px;">
+                <h1 style="color: antiquewhite; text-align: center;">Upcoming Gigs!</h1>
+                <hr>
+                <form action="{{ url_for('main.gigs') }}", method="POST" class="text-colour gig-filter-form" style="max-width: 400px;">
+                    {{ form.csrf_token }}
+                    <p class='form-label'>
+                        {{ form.start_date.label }} <br>{{ form.start_date(class='datepicker') }} {{ form.hidden_tag() }}
+                    </p>
+                    <p>    
+                        {{ form.end_date.label }} <br>{{ form.end_date(class='datepicker') }} {{ form.hidden_tag() }}
+                    </p>
+                    <p class='form-label'>
+                        {{ form.venue_filter.label }} <br>{{ form.venue_filter(class="form-control") }} {{ form.hidden_tag() }}
+                    </p>
+                    <p class='form-label'>
+                        {{ form.search_field.label }} <br>{{ form.search_field(size=30) }} {{ form.hidden_tag() }}
+                    </p>
+                    <div class="gig-filter-submission">
+                        <button class='btn btn-primary mb-3' type="submit" name="gig_filter_submit">{{ form.submit.label }}</button>
+                        <button class='btn btn-primary mb-3' type="submit" formaction="{{ url_for('main.refresh_filters') }}">Refresh</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <br>
+        <table id="gig-data" class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col" class="colname gig-col">Event</th>
+                    <th scope="col" class="colname gig-col">Date</th>
+                    <th scope="col" class="colname gig-col">Venue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td><a href="{{ row['Link'] }}" target="_blank">{{ row['Title'] }}</a></td>
+                    <td>{{ row['Date'] }}</td>
+                    <td>{{ row['Venue'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <hr>
+        <div class="feedback">
+            <p class="lead my-3">Hey there! If you have any suggestions for this app, send them through using the form below 👇</p>
+            {% from "bootstrap5/form.html" import render_form %}
+            {{ render_form(contact_form) }}
+        </div>
+        <br>
+    </div>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}"></script>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

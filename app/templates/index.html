@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block styles %}
+{% endblock %}
+{% block content %}
+    <div class="container welcome-page">
+        <div class="intro">
+            <img src="{{ url_for('static', filename = 'web_icon/android-chrome-192x192.png') }}" style="width: 100px; height: 100px;">
+            <br>
+            <br>
+            <h1 style="color: antiquewhite; font-weight: 200;">'Welcome to EventHub!</h1>
+            <br>
+            <p style="color: white;">Stop scrolling your socials for something to do 😘</p>
+            <br>
+            <a class="btn btn-outline-success btn-lg" href="{{ url_for('main.gigs') }}">Find Gigs</a>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}
