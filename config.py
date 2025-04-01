@@ -20,5 +20,5 @@ class Config:
     GMAIL_PASSWORD = os.environ.get("GMAIL_USER_PASSWORD")
     GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD")
     RECAPTCHA_PUBLIC_KEY = os.environ.get("RECAPTCHA_PUBLIC_KEY")
-    RECAPTCHA_SECRET_KEY = os.environ.get("RECAPTCHA_SECRET_KEY")
+    RECAPTCHA_PRIVATE_KEY = os.environ.get("RECAPTCHA_PRIVATE_KEY")
     ENV = os.environ.get("ENV")

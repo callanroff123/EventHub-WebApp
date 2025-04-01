@@ -83,8 +83,8 @@ def gigs():
         message = EmailMessage()
         message["From"] = my_email
         message["To"] = my_email
-        message["subject"] = f"""{contact_form.name.data} ({contact_form.email.data}) has reached out from your website."""
-        message.set_content(form.message.data)
+        message["subject"] = f"""{contact_form.name.data} ({contact_form.email.data}) has reached out from EventHub."""
+        message.set_content(contact_form.message.data)
         conn.starttls()
         conn.login(
             user = my_email,
@@ -92,7 +92,8 @@ def gigs():
         )
         conn.send_message(message)
         conn.close()
-        return(redirect(url_for("contact")))
+        flash("Message sent!")
+        return(redirect(url_for("main.gigs")))
     return(render_template(
         "gigs.html",
         data = data_refined,
