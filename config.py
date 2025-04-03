@@ -14,7 +14,7 @@ class Config:
     MAIL_USE_TLS = os.environ.get("MAIL_USE_TLS") is not None
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD")
-    ADMINS = ["calwebscraper@gmail.com"]
+    ADMINS = [os.environ.get("GMAIL_USER_EMAIL")]
     MS_TRANSLATOR_KEY = os.environ.get("MS_TRANSLATOR_KEY")
     GMAIL_USER_EMAIL = os.environ.get("GMAIL_USER_EMAIL")
     GMAIL_PASSWORD = os.environ.get("GMAIL_USER_PASSWORD")
