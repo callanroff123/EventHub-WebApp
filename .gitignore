@@ -8,6 +8,8 @@ __pycache__/
 
 # Custom
 rel_imports.txt
+service_principal.json
+acr_push_creds.json
 
 # Distribution / packaging
 .Python
