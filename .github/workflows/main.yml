@@ -33,5 +33,11 @@ jobs:
       - name: "Build and push Docker image to ACR"
         run: |
           docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/webapp:latest \
-            --build-arg GMAIL_APP_PASSWORD=${{ secrets.GMAIL_APP_PASSWORD }}
+            --build-arg GMAIL_APP_PASSWORD=${{ secrets.GMAIL_APP_PASSWORD }} \
+            --build-arg GMAIL_PASSWORD=${{ secrets.GMAIL_PASSWORD }} \
+            --build-arg GMAIL_USER_EMAIL=${{ secrets.GMAIL_USER_EMAIL }} \
+            --build-arg RECAPTCHA_PUBLIC_KEY=${{ secrets.RECAPTCHA_PUBLIC_KEY }} \
+            --build-arg RECAPTCHA_PRIVATE_KEY=${{ secrets.RECAPTCHA_PRIVATE_KEY }} \
+            --build-arg MAIL_USERNAME=${{ secrets.MAIL_USERNAME }} \
+            --build-arg MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/webapp:latest
