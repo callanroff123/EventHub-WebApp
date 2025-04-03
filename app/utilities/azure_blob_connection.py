@@ -21,7 +21,6 @@ def read_from_azure_blob_storage(connection_string, container_name, file_name):
     blob_data = blob_client.download_blob()
     data = blob_data.readall()
     df = pd.read_csv(BytesIO(data))
-    print("Successfully read file from Azure Blob Storage!")
     return(df)
 
 
