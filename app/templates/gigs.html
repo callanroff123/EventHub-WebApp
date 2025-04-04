@@ -63,7 +63,11 @@
         <div class="feedback">
             <p class="lead my-3">Hey there! If you have any suggestions for this app, send them through using the form below 👇</p>
             {% from "bootstrap5/form.html" import render_form %}
-            {{ render_form(contact_form) }}
+            <form method="POST">
+                {{ contact_form.hidden_tag() }}
+                <input type="hidden" name="contact_submit" value="1">
+                {{ render_form(contact_form) }}
+            </form>
         </div>
         <br>
     </div>
