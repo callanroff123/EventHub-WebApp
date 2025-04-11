@@ -228,3 +228,36 @@ body {
     border-color: inherit;
     cursor: default !important;
 }
+
+.event-image {
+    max-width: 200px;
+    max-height: 200px;
+}
+
+table {
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.links {
+    display: flex;
+    flex-direction: row;
+}
+
+.icon {
+    margin: 7px;
+}
+
+.multiple-fields {
+    display: flex;
+    flex-direction: row;
+}
+
+.multiple-fields p {
+    margin-right: 40px;
+}
