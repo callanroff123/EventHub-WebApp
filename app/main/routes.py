@@ -2,8 +2,9 @@
 # Ex: url_for("login") -> url_for("auth.login")
 import os
 from dotenv import load_dotenv
-from flask import render_template, request, redirect, url_for, flash
-import pandas as pd
+from flask import render_template, request, redirect, url_for, flash, jsonify
+import requests
+import ast
 import smtplib
 from email.message import EmailMessage
 from datetime import datetime
@@ -16,19 +17,36 @@ from app.utilities.azure_blob_connection import read_from_azure_blob_storage, sh
 load_dotenv()
 CONNECTION_STRING = os.environ.get("MS_BLOB_CONNECTION_STRING")
 CONTAINER_NAME = os.environ.get("MS_BLOB_CONTAINER_NAME")
-BLOBS = show_azure_blobs(
-    connection_string = CONNECTION_STRING,
-    container_name = CONTAINER_NAME
-)
-FILE_NAME = max(BLOBS)
 
 
-# Read in default music events from Azure Blob Storage
-df = read_from_azure_blob_storage(
-    connection_string = CONNECTION_STRING,
-    container_name = CONTAINER_NAME,
-    file_name = FILE_NAME
-)
+# API FOR GIG EXTRACTION
+@bp.route("/api/gigs", methods = ["GET"])
+def get_gigs():
+    start_date = request.args.get("start_date")
+    end_date = request.args.get("end_date")
+    venue_filter = request.args.get("venue_filter")
+    search_field = request.args.get("search_field")
+    blobs = show_azure_blobs(
+        connection_string = CONNECTION_STRING,
+        container_name = CONTAINER_NAME
+    )
+    latest_file = max(blobs)
+    json_data = read_from_azure_blob_storage(
+        connection_string = CONNECTION_STRING,
+        container_name = CONTAINER_NAME,
+        file_name = latest_file
+    )
+    current_date = datetime.now().date()
+    json_data_refined = [d for d in json_data if datetime.strptime(d["Date"], "%Y-%m-%d").date() >= current_date]
+    if start_date:
+        json_data_refined = [d for d in json_data_refined if datetime.strptime(d["Date"], "%Y-%m-%d").date() >= datetime.strptime(start_date, "%Y-%m-%d").date()]
+    if end_date:
+        json_data_refined = [d for d in json_data_refined if datetime.strptime(d["Date"], "%Y-%m-%d").date() <= datetime.strptime(end_date, "%Y-%m-%d").date()]
+    if venue_filter:
+        json_data_refined = [d for d in json_data_refined if d["Venue"] in venue_filter]
+    if search_field:
+        json_data_refined = [d for d in json_data_refined if (search_field in d["Venue"].lower()) or (search_field in d["Title"].lower())]
+    return(jsonify(json_data_refined))
 
 
 # APP LANDING PAGE
@@ -46,37 +64,58 @@ def index():
 # Both the gigs and posts have a filter mechanism.
 @bp.route("/gigs", methods = ["GET", "POST"])
 def gigs():
-    df_refined = df.copy()
-    df_refined = df_refined[
-        (pd.to_datetime(df_refined["Date"]) >= pd.to_datetime(datetime.now().date()))
-    ].reset_index(drop = True)
-    print(df_refined.head())
-    default_venues = list(df_refined["Venue"].unique())
-    form = FilterForm(default_venues = default_venues)
+    blobs = show_azure_blobs(
+        connection_string = CONNECTION_STRING,
+        container_name = CONTAINER_NAME
+    )
+    latest_file = max(blobs)
+    json_data = read_from_azure_blob_storage(
+        connection_string = CONNECTION_STRING,
+        container_name = CONTAINER_NAME,
+        file_name = latest_file
+    )
+    json_data = [d | {"Artist_Certainty_Int": float(d["Artist_Certainty"])} for d in json_data]
+    current_date = datetime.now().date()
+    all_genres_raw = [ast.literal_eval(d["genres"]) if "[" in d["genres"] else None for d in json_data]
+    all_genres = [l for l in all_genres_raw if l is not None and len(l) > 0]
+    all_genres = sorted(list(set([i.upper() for sublist in all_genres for i in sublist])))
+    form = FilterForm(
+        default_venues = list(set([d["Venue"] for d in json_data])),
+        default_genres = all_genres
+    )
+    json_data_refined = [d for d in json_data if datetime.strptime(d["Date"], "%Y-%m-%d").date() >= current_date]
     if "gig_filter_submit" in request.form:
-        print(request.form)
         if form.start_date.data:
-            df_refined = df_refined[
-                (pd.to_datetime(df_refined["Date"]) >= pd.to_datetime(form.start_date.data))
-            ].reset_index(drop = True)
+            json_data_refined = [d for d in json_data_refined if datetime.strptime(d["Date"], "%Y-%m-%d").date() >= form.start_date.data]
         if form.end_date.data:
-            df_refined = df_refined[
-                (pd.to_datetime(df_refined["Date"]) <= pd.to_datetime(form.end_date.data))
-            ].reset_index(drop = True)
+            json_data_refined = [d for d in json_data_refined if datetime.strptime(d["Date"], "%Y-%m-%d").date() <= form.end_date.data]
         if form.venue_filter.data:
-            df_refined = df_refined[
-                (df_refined["Venue"].isin(list(form.venue_filter.data)))
-            ].reset_index(drop = True)
+            json_data_refined = [d for d in json_data_refined if d["Venue"] in form.venue_filter.data]
+        if form.genre_filter.data:
+            json_data_refined = [d for d in json_data_refined if d["genres"] != ""]
+            json_data_refined = [d for d in json_data_refined if any(i in form.genre_filter.data for i in ast.literal_eval(d["genres"].upper()))]
         if form.search_field.data:
-            df_refined = df_refined[
-                df_refined["Title"].str.lower().str.contains(form.search_field.data.lower()) |
-                df_refined["Venue"].str.lower().str.contains(form.search_field.data.lower())
-            ]
-        if len(df_refined) < len(df):
+            json_data_refined = [d for d in json_data_refined if (form.search_field.data in d["Venue"].lower()) or (form.search_field.data in d["Title"].lower())]
+        if len(json_data_refined) < len(json_data):
             flash("Filter applied!")
-    data_refined = df_refined.to_dict("records")
+    return(render_template(
+        "gigs.html",
+        data = json_data_refined,
+        form = form
+    ))
+
+
+# For refreshing filters on the MAIN GIGS page
+@bp.route('/refresh_filters', methods = ["GET", "POST"])
+def refresh_filters():
+    return(redirect(url_for('main.gigs', community_type = "following_users")))
+
+
+# Contact page
+@bp.route("/contact", methods = ["GET", "POST"])
+def contact():
     contact_form = ContactForm()
-    if contact_form.validate_on_submit():
+    if "contact_submit" in request.form and contact_form.validate_on_submit():
         conn = smtplib.SMTP("smtp.gmail.com")
         my_email = os.getenv("GMAIL_USER_EMAIL")
         my_password = os.getenv("GMAIL_APP_PASSWORD")
@@ -95,18 +134,7 @@ def gigs():
         flash("Message sent!")
         return(redirect(url_for("main.gigs")))
     return(render_template(
-        "gigs.html",
-        data = data_refined,
-        form = form,
+        "contact.html",
         contact_form = contact_form,
         recaptcha_site_key = os.getenv("RECAPTCHA_PUBLIC_KEY")
     ))
-
-
-# For refreshing filters on the MAIN GIGS page
-@bp.route('/refresh_filters', methods = ["GET", "POST"])
-def refresh_filters():
-    username = request.args.get("username")
-    if username:
-        return(redirect(url_for("main.profile", username = username)))
-    return(redirect(url_for('main.gigs', community_type = "following_users")))

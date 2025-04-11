@@ -29,15 +29,20 @@ class FilterForm(FlaskForm):
         label = "Filter Venues: ",
         choices = []
     )
+    genre_filter = SelectMultipleField(
+        label = "Filter Genres: ",
+        choices = []
+    )
     search_field = StringField(
         label = "Keyword: "
     )
     submit = SubmitField("OK")
 
-    def __init__(self, default_venues = None, *args, **kwargs):
+    def __init__(self, default_venues = None, default_genres = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.venue_filter.choices = default_venues or []
- 
+        self.genre_filter.choices = default_genres or []
+
 
 class ContactForm(FlaskForm):
 

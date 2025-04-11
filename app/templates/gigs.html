@@ -18,7 +18,7 @@
             <div class="gig-filter-wrapper" style="padding-left: 20px;">
                 <h1 style="color: antiquewhite; text-align: center;">Upcoming Gigs!</h1>
                 <hr>
-                <form action="{{ url_for('main.gigs') }}", method="POST" class="text-colour gig-filter-form" style="max-width: 400px;">
+                <form action="{{ url_for('main.gigs') }}", method="POST" class="text-colour gig-filter-form">
                     {{ form.csrf_token }}
                     <p class='form-label'>
                         {{ form.start_date.label }} <br>{{ form.start_date(class='datepicker') }} {{ form.hidden_tag() }}
@@ -26,9 +26,14 @@
                     <p>    
                         {{ form.end_date.label }} <br>{{ form.end_date(class='datepicker') }} {{ form.hidden_tag() }}
                     </p>
-                    <p class='form-label'>
-                        {{ form.venue_filter.label }} <br>{{ form.venue_filter(class="form-control") }} {{ form.hidden_tag() }}
-                    </p>
+                    <div class="multiple-fields">
+                        <p class='form-label'>
+                            {{ form.venue_filter.label }} <br>{{ form.venue_filter(class="form-control") }} {{ form.hidden_tag() }}
+                        </p>
+                        <p class='form-label'>
+                            {{ form.genre_filter.label }} <br>{{ form.genre_filter(class="form-control") }} {{ form.hidden_tag() }}
+                        </p>
+                    </div>
                     <p class='form-label'>
                         {{ form.search_field.label }} <br>{{ form.search_field(size=30) }} {{ form.hidden_tag() }}
                     </p>
@@ -43,31 +48,51 @@
         <table id="gig-data" class="table table-striped">
             <thead class="thead-dark">
                 <tr>
+                    <th scope="col" class="colname gig-col"></th>
                     <th scope="col" class="colname gig-col">Event</th>
                     <th scope="col" class="colname gig-col">Date</th>
                     <th scope="col" class="colname gig-col">Venue</th>
+                    <th scope="col" class="colname gig-col">Genres</th>
+                    <th scope="col" class="colname gig-col"></th>
                 </tr>
             </thead>
             <tbody>
                 {% for row in data %}
-                <tr>
+                <tr style="text-align: center; text-align: justify;">
+                    <td>
+                        <a href="{{ row['Link'] }}" target="_blank">
+                            <img class="event-image" src="{{ row['Image'] }}">
+                        </a>
+                    </td>
                     <td><a href="{{ row['Link'] }}" target="_blank">{{ row['Title'] }}</a></td>
                     <td>{{ row['Date'] }}</td>
                     <td>{{ row['Venue'] }}</td>
+                    <td>
+                        {% if row['artist_id'] != '' or row['Artist_Certainty_Int'] > 70 %}
+                            {{ row['genres'].replace("]", "").replace("[", "").replace("'", "").upper() }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <div class="links">
+                            {% if row['artist_id'] != '' %}
+                                <a href="spotify:artist:{{ row['artist_id'] }}" target="_blank" class="icon">
+                                    <i class="fab fa-spotify" style="color: #1DB954; font-size: 25px;"></i>
+                                </a>
+                                {% if row['youtube_url'] %}
+                                    <a href="{{ row['youtube_url'] }}" target="_blank" class="icon">
+                                        <i class="fab fa-youtube" style="color: #FF0000; font-size: 25px;"></i>
+                                    </a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
         <br>
-        <hr>
-        <div class="feedback">
-            <p class="lead my-3">Hey there! If you have any suggestions for this app, send them through using the form below 👇</p>
-            {% from "bootstrap5/form.html" import render_form %}
-            {{ render_form(contact_form) }}
-        </div>
         <br>
     </div>
-    <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}"></script>
 {% endblock %}
 {% block scripts %}
 {% endblock %}
