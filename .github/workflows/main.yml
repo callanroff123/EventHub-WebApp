@@ -16,19 +16,13 @@ jobs:
       - name: 'Checkout code'
         uses: actions/checkout@v4
 
-      # Login via Azure CLI
-      - name: 'Login via Azure CLI'
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
       # Login to DigitalOcean Container Registry
       - name: Login to DigitalOcean Container Registry
         run: echo "${{ secrets.DOCR_PASSWORD }}" | docker login ${{ secrets.DOCR_REGISTRY }} -u ${{ secrets.DOCR_USERNAME }} --password-stdin 
 
       # Build docker image
       - name: Build Image
-        run:
+        run: |
           docker build . -t ${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:latest \
             --build-arg GMAIL_APP_PASSWORD=${{ secrets.GMAIL_APP_PASSWORD }} \
             --build-arg GMAIL_PASSWORD=${{ secrets.GMAIL_PASSWORD }} \
