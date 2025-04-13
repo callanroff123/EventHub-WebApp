@@ -22,17 +22,14 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      # Login to ACR
-      - name: 'Log into ACR'
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-        
-      - name: "Build and push Docker image to ACR"
-        run: |
-          docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/webapp:latest \
+      # Login to DigitalOcean Container Registry
+      - name: Login to DigitalOcean Container Registry
+        run: echo "${{ secrets.DOCR_PASSWORD }}" | docker login ${{ secrets.DOCR_REGISTRY }} -u ${{ secrets.DOCR_USERNAME }} --password-stdin 
+
+      # Build docker image
+      - name: Build Image
+        run:
+          docker build . -t ${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:latest \
             --build-arg GMAIL_APP_PASSWORD=${{ secrets.GMAIL_APP_PASSWORD }} \
             --build-arg GMAIL_PASSWORD=${{ secrets.GMAIL_PASSWORD }} \
             --build-arg GMAIL_USER_EMAIL=${{ secrets.GMAIL_USER_EMAIL }} \
@@ -44,4 +41,7 @@ jobs:
             --build-arg MS_BLOB_CONTAINER_NAME=${{ secrets.MS_BLOB_CONTAINER_NAME }} \
             --build-arg OPENAI_KEY=${{ secrets.OPENAI_KEY }} \
             --build-arg MS_BLOB_CONNECTION_STRING=${{ secrets.MS_BLOB_CONNECTION_STRING }}
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/webapp:latest
+
+      # Push Docker image to container repo (DOCR)
+      - name: Push Image to DigitalOcean Container Registries
+        run: docker push ${{ secrets.DOCR_REGISTRY }}/${{ secrets.DOCR_REPO }}:latest
