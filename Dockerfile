@@ -51,8 +51,8 @@ RUN apt-get update && \
     apt-get install -y curl && \
     rm -rf /var/lib/apt/lists/*
 
-EXPOSE 5000
+EXPOSE 8080
 
 # Runs Gunicorn as the WSGI server
 # Production-ready, WSGI equivalent to "flask run"
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "-w", "4", "blog:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "-w", "4", "blog:app"]
