@@ -8,6 +8,7 @@ import ast
 import smtplib
 from email.message import EmailMessage
 from datetime import datetime
+from zoneinfo import ZoneInfo
 from app.main.forms import FilterForm, ContactForm
 from app.main import bp
 from app.utilities.azure_blob_connection import read_from_azure_blob_storage, show_azure_blobs
@@ -36,7 +37,7 @@ def get_gigs():
         container_name = CONTAINER_NAME,
         file_name = latest_file
     )
-    current_date = datetime.now().date()
+    current_date = datetime.now(tz = ZoneInfo("Australia/Sydney")).date()
     json_data_refined = [d for d in json_data if datetime.strptime(d["Date"], "%Y-%m-%d").date() >= current_date]
     if start_date:
         json_data_refined = [d for d in json_data_refined if datetime.strptime(d["Date"], "%Y-%m-%d").date() >= datetime.strptime(start_date, "%Y-%m-%d").date()]
@@ -75,7 +76,8 @@ def gigs():
         file_name = latest_file
     )
     json_data = [d | {"Artist_Certainty_Int": float(d["Artist_Certainty"])} for d in json_data]
-    current_date = datetime.now().date()
+    max_rank = max([float(d["followers_rank"]) for d in json_data])
+    current_date = datetime.now(tz = ZoneInfo("Australia/Sydney")).date()
     all_genres_raw = [ast.literal_eval(d["genres"]) if "[" in d["genres"] else None for d in json_data]
     all_genres = [l for l in all_genres_raw if l is not None and len(l) > 0]
     all_genres = sorted(list(set([i.upper() for sublist in all_genres for i in sublist])))
@@ -101,7 +103,9 @@ def gigs():
     return(render_template(
         "gigs.html",
         data = json_data_refined,
-        form = form
+        form = form,
+        current_date = current_date.isoformat(),
+        max_rank = max_rank
     ))
 
 

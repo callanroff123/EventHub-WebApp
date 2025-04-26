@@ -17,6 +17,27 @@ bootstrap = Bootstrap()
 moment = Moment() # Converts UTC time to the specific client's local time. Works together with moment.js => Call in <scripts> tag in HTML.
 
 
+# For Artist popularity bar functionality!
+def followers_bar(rank, max_rank):
+    try:
+        rank = float(rank)
+        percent = 1 - rank / max_rank
+        r_start, g_start, b_start = 0, 70, 255
+        r_end, g_end, b_end = 200, 230, 255
+        r = int(r_start + (1 - percent) * (r_end - r_start))
+        g = int(g_start + (1 - percent) * (g_end - g_start))
+        b = int(b_start + (1 - percent) * (b_end - b_start))
+        color = f'rgb({r}, {g}, {b})'
+        bar_width = percent * 100
+        return f'''
+            <div style="width:100px; height:10px; border-radius:5px;" data-score="{bar_width}">
+                <div style="background:{color}; width:{bar_width}%; height:100%; border-radius:5px;"></div>
+            </div>
+        '''
+    except:
+        return ''
+
+
 # "FACTORY FUNCTION"
 # Instead of setting app as a global variable (i.e., declaring outside of this function), have a function which creates an instance of the app instead
 # Makes it easier to test under different configurations, and allow multiple instantiations of the app simultaneously, in isolation
@@ -24,6 +45,7 @@ def create_app(config_class = Config):
 
     app = Flask(__name__)
     app.config.from_object(config_class)
+    app.jinja_env.globals.update(followers_bar = followers_bar)
 
     # Uncomment these when we integrate a database with the app
     #db.init_app(app)
