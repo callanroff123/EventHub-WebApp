@@ -7,7 +7,9 @@
         <div class="new-top-content">
             <div class="wrapper-event-hub-logo">
                 <div class="event-hub-logo" style="text-align: center; padding-right: 10px;">
-                    <img src="{{ url_for('static', filename = 'web_icon/android-chrome-192x192.png') }}" style="width: 200px; height: 200px;">
+                    <a href="{{ url_for('main.index') }}">
+                    <img src="{{ url_for('static', filename = 'images/MelbourneGigs.png') }}" style="width: 300px; height: 190px; border-radius: 10px">
+                    </a>
                     <br>
                     <br>
                     <p>
@@ -18,13 +20,13 @@
             <div class="gig-filter-wrapper" style="padding-left: 20px;">
                 <h1 style="color: antiquewhite; text-align: center;">Upcoming Gigs!</h1>
                 <hr>
-                <form action="{{ url_for('main.gigs') }}", method="POST" class="text-colour gig-filter-form">
+                <form action="{{ url_for('main.gigs') }}" method="POST" class="text-colour gig-filter-form">
                     {{ form.csrf_token }}
                     <p class='form-label'>
-                        {{ form.start_date.label }} <br>{{ form.start_date(class='datepicker') }} {{ form.hidden_tag() }}
+                        {{ form.start_date.label }} <br>{{ form.start_date(class='datepicker', min = current_date) }} {{ form.hidden_tag() }}
                     </p>
                     <p>    
-                        {{ form.end_date.label }} <br>{{ form.end_date(class='datepicker') }} {{ form.hidden_tag() }}
+                        {{ form.end_date.label }} <br>{{ form.end_date(class='datepicker', min = current_date) }} {{ form.hidden_tag() }}
                     </p>
                     <div class="multiple-fields">
                         <p class='form-label'>
@@ -53,12 +55,13 @@
                     <th scope="col" class="colname gig-col">Date</th>
                     <th scope="col" class="colname gig-col">Venue</th>
                     <th scope="col" class="colname gig-col">Genres</th>
+                    <th scope="col" class="colname gig-col">Artist Popularity</th>
                     <th scope="col" class="colname gig-col"></th>
                 </tr>
             </thead>
             <tbody>
                 {% for row in data %}
-                <tr style="text-align: center; text-align: justify;">
+                <tr style="text-align: center;">
                     <td>
                         <a href="{{ row['Link'] }}" target="_blank">
                             <img class="event-image" src="{{ row['Image'] }}">
@@ -71,6 +74,9 @@
                         {% if row['artist_id'] != '' or row['Artist_Certainty_Int'] > 70 %}
                             {{ row['genres'].replace("]", "").replace("[", "").replace("'", "").upper() }}
                         {% endif %}
+                    </td>
+                    <td>
+                        {{ followers_bar(row['followers_rank'], max_rank) | safe }}
                     </td>
                     <td>
                         <div class="links">
@@ -95,4 +101,33 @@
     </div>
 {% endblock %}
 {% block scripts %}
+    <script>
+        
+        $(document).ready(function() {
+            $('#gig-data').dataTable({
+                paging: false,
+                searching: false,
+                info: false,
+                columns: [
+                    { orderable: false, searchable: false },
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    { orderable: false, searchable: false },
+                ],
+                columnDefs: [{
+                    targets: [5],
+                    orderDataType: 'dom-data-score'
+                }]
+            });
+        });
+
+        $.fn.dataTable.ext.order['dom-data-score'] = function(settings, col) {
+            return this.api().column(col, {order:'index'}).nodes().map(function(td, i) {
+                return $(td).find('div').data('score');
+            });
+        };
+    </script>
 {% endblock %}
