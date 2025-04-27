@@ -263,3 +263,56 @@ td {
 .multiple-fields p {
     margin-right: 40px;
 }
+
+@media (max-width: 768px) {
+
+    .label {
+        display: None;
+    }
+
+    .new-top-content {
+        grid-template-columns: 1fr;
+    }
+
+    .wrapper-event-hub-logo {
+        border-right: none;
+        padding-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .gig-filter-wrapper {
+        padding-left: 0;
+    }
+
+    #gig-data, #gig-data thead, #gig-data tbody, #gig-data th, #gig-data td, #gig-data tr {
+        display: block;
+        width: 100%;
+    }
+
+    #gig-data thead {
+        display: none;
+    }
+
+    #gig-data tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #fff;
+        padding: 10px;
+    }
+
+    #gig-data td {
+        text-align: left;
+        padding: 10px;
+        position: relative;
+    }
+
+    #gig-data td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+        color: #555;
+    }
+}
+

@@ -75,7 +75,7 @@ def gigs():
         container_name = CONTAINER_NAME,
         file_name = latest_file
     )
-    json_data = [d | {"Artist_Certainty_Int": float(d["Artist_Certainty"])} for d in json_data]
+    json_data = [d | {"Artist_Certainty_Int": float(0 if d["Artist_Certainty"].strip() == "" else d["Artist_Certainty"])} for d in json_data]
     max_rank = max([float(d["followers_rank"]) for d in json_data])
     current_date = datetime.now(tz = ZoneInfo("Australia/Sydney")).date()
     all_genres_raw = [ast.literal_eval(d["genres"]) if "[" in d["genres"] else None for d in json_data]
