@@ -2,7 +2,7 @@
 # Ex: url_for("login") -> url_for("auth.login")
 import os
 from dotenv import load_dotenv
-from flask import render_template, request, redirect, url_for, flash, jsonify
+from flask import render_template, request, redirect, url_for, flash, jsonify, send_from_directory
 import requests
 import ast
 import smtplib
@@ -142,3 +142,8 @@ def contact():
         contact_form = contact_form,
         recaptcha_site_key = os.getenv("RECAPTCHA_PUBLIC_KEY")
     ))
+
+
+@bp.route('/sitemap.xml')
+def sitemap():
+    return send_from_directory('static', 'sitemap.xml')

@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /private/
+Disallow: /contact
+Sitemap: https://melbourne-gigs.com.au/sitemap.xml
