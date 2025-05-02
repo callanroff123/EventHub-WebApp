@@ -106,7 +106,7 @@ body {
 #gig-data {
     width: 100%;
     display: block;
-    max-height: 400px;
+    max-height: 500px;
     overflow-y: auto;
     border-collapse: collapse;
 }
@@ -125,11 +125,13 @@ body {
 #gig-data th {
     text-align: center;
     width: 33.33%;
+    border: none;
 }
 
 #gig-data td {
     text-align: center;
     width: 33.33%;
+    border: none;
 }
 
 #gig-data .colname {
@@ -314,5 +316,6 @@ td {
         margin-bottom: 5px;
         color: #555;
     }
+
 }
 

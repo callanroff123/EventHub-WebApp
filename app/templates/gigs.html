@@ -47,7 +47,7 @@
             </div>
         </div>
         <br>
-        <table id="gig-data" class="table">
+        <table id="gig-data" class="table table-striped">
             <thead class="thead-dark">
                 <tr>
                     <th scope="col" class="colname gig-col"></th>
@@ -61,50 +61,50 @@
             </thead>
             <tbody>
                 {% for row in data %}
-                <tr style="text-align: center;">
-                    <td>
-                        <a href="{{ row['Link'] }}" target="_blank">
-                            <img class="event-image" src="{{ row['Image'] }}">
-                        </a>
-                    </td>
-                    <td><a href="{{ row['Link'] }}" target="_blank">{{ row['Title'] }}</a></td>
-                    <td data-label="When">{{ row['Date'] }}</td>
-                    <td data-label="Where">{{ row['Venue'] }}</td>
-                    {% if row['genres'].replace("]", "").replace("[", "").replace("'", "").upper().strip() == "" %}
-                        <td></td>
-                    {% else %}
-                        <td data-label="Genres">
-                            {% if row['artist_id'] != '' or row['Artist_Certainty_Int'] > 70 %}
-                                {{ row['genres'].replace("]", "").replace("[", "").replace("'", "").upper() }}
-                            {% endif %}
+                    <tr style="text-align: center;">
+                        <td>
+                            <a href="{{ row['Link'] }}" target="_blank">
+                                <img class="event-image" src="{{ row['Image'] }}">
+                            </a>
                         </td>
-                    {% endif %}
-                    {% if row['followers'] == "" %}
-                        <td></td>
-                    {% else %}
-                        <td data-label="Artist Popularity">
-                            {{ followers_bar(row['followers_rank'], max_rank) | safe }}
-                        </td>
-                    {% endif %}
-                    {% if row['artist_id'] == '' or row['artist_uri'] == '' %}
-                        <td></td>
-                    {% else %}
-                        <td data-label="Links">
-                            <div class="links">
-                                {% if row['artist_id'] != '' %}
-                                    <a href="spotify:artist:{{ row['artist_id'] }}" target="_blank" class="icon">
-                                        <i class="fab fa-spotify" style="color: #1DB954; font-size: 25px;"></i>
-                                    </a>
-                                    {% if row['youtube_url'] %}
-                                        <a href="{{ row['youtube_url'] }}" target="_blank" class="icon">
-                                            <i class="fab fa-youtube" style="color: #FF0000; font-size: 25px;"></i>
-                                        </a>
-                                    {% endif %}
+                        <td><a href="{{ row['Link'] }}" target="_blank" style="text-decoration: none;"><b>{{ row['Title'] }}</b></a></td>
+                        <td data-label="When">{{ row['Date'] }}</td>
+                        <td data-label="Where">{{ row['Venue'] }}</td>
+                        {% if row['genres'].replace("]", "").replace("[", "").replace("'", "").upper().strip() == "" %}
+                            <td></td>
+                        {% else %}
+                            <td data-label="Genres">
+                                {% if row['artist_id'] != '' or row['Artist_Certainty_Int'] > 70 %}
+                                    {{ row['genres'].replace("]", "").replace("[", "").replace("'", "").upper() }}
                                 {% endif %}
-                            </div>
-                        </td>
-                    {% endif %}
-                </tr>
+                            </td>
+                        {% endif %}
+                        {% if row['followers'] == "" %}
+                            <td></td>
+                        {% else %}
+                            <td data-label="Artist Popularity">
+                                {{ followers_bar(row['followers_rank'], max_rank) | safe }}
+                            </td>
+                        {% endif %}
+                        {% if row['artist_id'] == '' or row['artist_uri'] == '' %}
+                            <td></td>
+                        {% else %}
+                            <td data-label="Links">
+                                <div class="links">
+                                    {% if row['artist_id'] != '' %}
+                                        <a href="spotify:artist:{{ row['artist_id'] }}" target="_blank" class="icon">
+                                            <i class="fab fa-spotify" style="color: #1DB954; font-size: 25px;"></i>
+                                        </a>
+                                        {% if row['youtube_url'] %}
+                                            <a href="{{ row['youtube_url'] }}" target="_blank" class="icon">
+                                                <i class="fab fa-youtube" style="color: #FF0000; font-size: 25px;"></i>
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </td>
+                        {% endif %}
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
