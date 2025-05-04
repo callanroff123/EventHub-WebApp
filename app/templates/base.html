@@ -53,6 +53,9 @@
                                 <a class="nav-link active" aria-current="page" href="{{ url_for('main.gigs') }}">Find Gigs!</a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="{{ url_for('main.about') }}">About</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link active" aria-current="page" href="{{ url_for('main.contact') }}">Contact</a>
                             </li>
                         </ul>
@@ -80,4 +83,6 @@
         {% block scripts %}
         {% endblock %}
     </body> 
+    {% block footer %}
+    {% endblock %}
 </html>

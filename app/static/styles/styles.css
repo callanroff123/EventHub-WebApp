@@ -1,5 +1,9 @@
 body {
-    background-color: #343a40;;
+    background-color: #343a40;
+    background-image: url("../images/background.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 .navbar-nav > li{
@@ -27,7 +31,6 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px;
-    background-color: #343a40;
     max-width: 500px;
 }
 
@@ -46,8 +49,12 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-right: 2px solid grey;
     padding-right: 10px;
+}
+
+.gig-filter-wrapper {
+    background-color: black;
+    border-radius: 10px;
 }
 
 .gig-filter-submission {
@@ -235,6 +242,7 @@ body {
     max-width: 200px;
     max-height: 200px;
     object-fit: cover;
+    border-radius: 10px;
 }
 
 table {
@@ -264,6 +272,12 @@ td {
 
 .multiple-fields p {
     margin-right: 40px;
+}
+
+.feedback {
+    background-color: black;
+    padding: 20px;
+    border-radius: 10px;
 }
 
 @media (max-width: 768px) {
