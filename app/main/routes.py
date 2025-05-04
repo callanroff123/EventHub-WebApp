@@ -12,6 +12,7 @@ from zoneinfo import ZoneInfo
 from app.main.forms import FilterForm, ContactForm
 from app.main import bp
 from app.utilities.azure_blob_connection import read_from_azure_blob_storage, show_azure_blobs
+from app.utilities.utils import readable_date
 
 
 # Read in necessary environment variables to connect to Azure
@@ -76,6 +77,7 @@ def gigs():
         file_name = latest_file
     )
     json_data = [d | {"Artist_Certainty_Int": float(0 if d["Artist_Certainty"].strip() == "" else d["Artist_Certainty"])} for d in json_data]
+    json_data = [d | {"Date_Formatted": readable_date(d["Date"])} for d in json_data]
     max_rank = max([float(d["followers_rank"]) for d in json_data])
     current_date = datetime.now(tz = ZoneInfo("Australia/Sydney")).date()
     all_genres_raw = [ast.literal_eval(d["genres"]) if "[" in d["genres"] else None for d in json_data]
@@ -113,6 +115,11 @@ def gigs():
 @bp.route('/refresh_filters', methods = ["GET", "POST"])
 def refresh_filters():
     return(redirect(url_for('main.gigs', community_type = "following_users")))
+
+
+@bp.route("/about")
+def about():
+    return(render_template("about.html"))
 
 
 # Contact page

@@ -18,7 +18,8 @@
                 </div>
             </div>
             <div class="gig-filter-wrapper" style="padding-left: 20px;">
-                <h1 style="color: antiquewhite; text-align: center;">Upcoming Gigs!</h1>
+                <br>
+                <h1 style="color: antiquewhite; text-align: center;">Upcoming Gigs</h1>
                 <hr>
                 <form action="{{ url_for('main.gigs') }}" method="POST" class="text-colour gig-filter-form">
                     {{ form.csrf_token }}
@@ -68,7 +69,7 @@
                             </a>
                         </td>
                         <td><a href="{{ row['Link'] }}" target="_blank" style="text-decoration: none;"><b>{{ row['Title'] }}</b></a></td>
-                        <td data-label="When">{{ row['Date'] }}</td>
+                        <td data-label="When" data-sort="{{ row['Date'] }}">{{ row['Date_Formatted'] }}</td>
                         <td data-label="Where">{{ row['Venue'] }}</td>
                         {% if row['genres'].replace("]", "").replace("[", "").replace("'", "").upper().strip() == "" %}
                             <td></td>
@@ -110,14 +111,18 @@
         </table>
         <br>
         <br>
-        <hr>
-        <div class="discalimer">
-            <h4><b>**Disclaimer</b></h4>
-            <p>The artist matching an event may not always be correct - AI is used to determine the <em>most likely</em> artist given an event title. If your event is listed here and the corresponding artist/s Spotify is incorrect, please log using the form in the <a href="{{ url_for('main.contact') }}">contact</a> page.</p>
-        </div>
-        <br>
         
     </div>
+{% endblock %}
+{% block footer %}
+    <hr>
+    <footer style="background-color:black; width: 100%; color: antiquewhite;">
+        <div class="discalimer" style="padding: 20px;">
+            <h4><b>**Disclaimer</b></h4>
+            <p>The artist matching an event may not always be correct - AI is used to determine the <em>most likely</em> artist given an event title. If your event is listed here and the corresponding artist/s Spotify is incorrect and you'd like to see it change, please log using the form in the <a href="{{ url_for('main.contact') }}">contact</a> page.</p>
+        </div>
+        <br>
+    </footer>
 {% endblock %}
 {% block scripts %}
     <script>
