@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+{% block styles %}
+{% endblock %}
+{% block content %}
+    <div class="main-container text-colour">
+        <div class="feedback">
+            <h1>FAQ</h1>
+            <hr>
+            <br>
+            <h3>What is Melbourne // Naarm Gigs?</h3>
+            <p>A website to help you find upcoming gigs happening around in and Melbourne (Naarm)!</p>
+            <br>
+            <h3>Where does event info come from?</h3>
+            <p>Events are gathered fom public ticketing platforms and venue websites. A sprinkle of AI helps match artists to their Spotify pages, helping you find new music!</p>
+            <br>
+            <h3>Is everything 100% accurate?</h3>
+            <p>We do our best to keep things up to date, but we recommend checking the official ticketing or venue link before heading out.</p>
+            <p>Moreover, AI is used to match an event title to a Spotify-active artist. Occasionally this is incorrect. If you notice an error you'd like to see change, please reach out via the <a href="{{ url_for('main.contact') }}">contact</a> form.</p>
+            <br>
+            <h3>Can I suggest an event?</h3>
+            <p>Currently this website picks up picking events automatically. However, if you spot something cool that's not listed, feel free to reach out!</p>
+            <br>
+            <h3>Do you collect my data?</h3>
+            <p>Heck no. This site doesn't track you. No collection of personal info or use of cookies. Browse gigs with peace of mind.</p>
+            <h3>Can I scrape or reuse the listings?</h3>
+            <p>The site is built for personal use. Please don't bulk scrape or republish the listings without asking first. Sharing with mates? Heckin' go for it!</p>
+            <p>If you would like to use these listings commercially or for a project, we may be able to provide you an API. Reach out!</p>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

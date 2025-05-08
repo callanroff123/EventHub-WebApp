@@ -25,6 +25,11 @@ class FilterForm(FlaskForm):
         label = "To: ", 
         format = "%Y-%m-%d"
     )
+    just_in = RadioField(
+        label = "",
+        choices = ["All", "Just In"],
+        default = "All"
+    )
     venue_filter = SelectMultipleField(
         label = "Filter Venues: ",
         choices = []
@@ -55,8 +60,7 @@ class ContactForm(FlaskForm):
         label = "Message: ",
         validators = [DataRequired(message = "Please Enter this Field.")],
         render_kw = {
-            "rows": 5,
-            "style": "min-width: 400px;"
+            "rows": 5
         }
     )
     recaptcha = RecaptchaField()

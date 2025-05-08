@@ -72,6 +72,61 @@
             {% endwith %}
             {% block content %}{% endblock %}
         </div>
+        
+        <div class="footer-container">
+            <div class="header"></div>
+            <footer class="page-footer shadow">
+                <div class="d-flex flex-column mx-auto py-5" style="width: 80%">
+                    <div class="d-flex flex-wrap justify-content-between">
+                        <div>
+                            <a href="{{ url_for('main.index') }}" class="d-flex align-items-center p-0" style="color: antiquewhite; text-decoration: none;">
+                                <img alt="logo" src="{{ url_for('static', filename='images/MelbourneGigsBasic.png') }}" width="30px" />
+                                <span class="ms-3 h5 font-weight-bold">Melbourne // Naarm Gigs</span>
+                            </a>
+                            <p class="my-3" style="width: 250px">Find gigs and concerts happening in Naarm!</p>
+                        </div>
+                        <div>
+                            <p class="h5 mb-4" style="font-weight: 600">Site Map</p>
+                            <ul class="p-0" style="list-style: none; cursor: pointer">
+                                <li class="my-2">
+                                    <a href="{{ url_for('main.index') }}" style="color: antiquewhite; text-decoration: none;">Home</a>
+                                </li>
+                                <li class="my-2">
+                                    <a href="{{ url_for('main.gigs') }}" style="color: antiquewhite; text-decoration: none;">Find Gigs!</a>
+                                </li>
+                                <li class="my-2">
+                                    <a href="{{ url_for('main.about') }}" style="color: antiquewhite; text-decoration: none;">About</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="h5 mb-4" style="font-weight: 600">Help</p>
+                            <ul class="p-0" style="list-style: none; cursor: pointer">
+                                <li class="my-2">
+                                    <a href="{{ url_for('main.faq') }}" style="color: antiquewhite; text-decoration: none;">FAQ</a>
+                                </li>
+                                <li class="my-2">
+                                    <a href="{{ url_for('main.contact') }}" style="color: antiquewhite; text-decoration: none;">Contact</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="h5 mb-4" style="font-weight: 600">Fine Print</p>
+                            <ul class="p-0" style="list-style: none; cursor: pointer">
+                                <li class="my-2">
+                                    <a href="{{ url_for('main.terms_of_use') }}" style="color: antiquewhite; text-decoration: none;">Terms of Use</a>
+                                </li>
+                                <li class="my-2">
+                                    <a href="{{ url_for('main.privacy_policy') }}" style="color: antiquewhite; text-decoration: none;">Privacy Policy</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <small class="text-center mt-5">&copy; Melbourne // Naarm Gigs, 2025.</small>
+                </div>
+            </footer>
+        </div>
+        
         <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
         <script
@@ -82,7 +137,5 @@
         </script>
         {% block scripts %}
         {% endblock %}
-    </body> 
-    {% block footer %}
-    {% endblock %}
+    </body>
 </html>

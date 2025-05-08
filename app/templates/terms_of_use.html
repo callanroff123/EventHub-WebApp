@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+{% block styles %}
+{% endblock %}
+{% block content %}
+    <div class="main-container text-colour">
+        <div class="feedback">
+            <h1>Terms of Use</h1>
+            <hr>
+            <p>Welcome to to Melbourne // Naarm Gigs! By using this website, you agree to the following simple terms:</p>
+            <br>
+            <h3>1. Purpose of the Site</h3>
+            <p>This site exists to help people find upcoming gigs and live music events in Melbourne (Naarm). Built for personal use — please don't use it for spamming or commercial exploitation.</p>
+            <br>
+            <h3>2. Disclaimer</h3>
+            <p>We do our best to keep event info accurate and up to date, but we can't guarantee that every gig listed will go ahead as planned. Always double-check details on official event or ticketing sites.</p>
+            <p>Additionally, the artist matching an event may not always be correct - AI is used to determine the <em>most likely</em> artist given an event title. If your event is listed here and the corresponding artist/s Spotify is incorrect and you'd like to see it change, please log using the form in the <a href="{{ url_for('main.contact') }}">contact</a> page.</p>
+            <br>
+            <h3>3. External Links</h3>
+            <p>Links are consistently provided to third-party sites (ticketing platforms and venue websites). We are not responsible for their content, policies or transactions you make with them.</p>
+            <br>
+            <h3>4. Intellectual Property</h3>
+            <p>The site's design, code and event listings are provided for your personal use. Feel free to browse and share with friends - but please don't bulk copy or republish the content elsewhere without permission.</p>
+            <br>
+            <h3>5. Changes to Site or Terms</h3>
+            <p>We may update the site or these terms on occasion. By continuing, you accept the latest version of these terms.</p>
+            <br>
+            <h3>6. Contact</h3>
+            <p>Want to get in touch? Have ideas? Spotted an error? Feel free to reach out via the <a href="{{ url_for('main.contact') }}">contact</a> page.</p>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

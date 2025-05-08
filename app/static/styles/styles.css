@@ -280,6 +280,23 @@ td {
     border-radius: 10px;
 }
 
+.footer-container {
+    background-color: black !important;
+    color: antiquewhite !important;
+}
+
+.main-container {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.radio-inline {
+    display: inline-block;
+    margin-right: 15px;
+}
+
 @media (max-width: 768px) {
 
     .label {

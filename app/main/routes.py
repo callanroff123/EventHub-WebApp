@@ -1,6 +1,7 @@
 # Note that for all routes associated with a bluprint, we must first assign the bluprint name before referencing a function in url_for(...)
 # Ex: url_for("login") -> url_for("auth.login")
 import os
+import numpy as np
 from dotenv import load_dotenv
 from flask import render_template, request, redirect, url_for, flash, jsonify, send_from_directory
 import requests
@@ -93,6 +94,9 @@ def gigs():
             json_data_refined = [d for d in json_data_refined if datetime.strptime(d["Date"], "%Y-%m-%d").date() >= form.start_date.data]
         if form.end_date.data:
             json_data_refined = [d for d in json_data_refined if datetime.strptime(d["Date"], "%Y-%m-%d").date() <= form.end_date.data]
+        if form.just_in.data:
+            if form.just_in.data == "Just In":
+                json_data_refined = [d for d in json_data_refined if (float(d["just_in"]) == 1) and (float(d["followers_rank"]) < np.max([float(d["followers_rank"]) for d in json_data_refined]))]
         if form.venue_filter.data:
             json_data_refined = [d for d in json_data_refined if d["Venue"] in form.venue_filter.data]
         if form.genre_filter.data:
@@ -149,6 +153,20 @@ def contact():
         contact_form = contact_form,
         recaptcha_site_key = os.getenv("RECAPTCHA_PUBLIC_KEY")
     ))
+
+
+@bp.route("/terms-of-use")
+def terms_of_use():
+    return(render_template("terms_of_use.html"))
+
+
+@bp.route("/privacy-policy")
+def privacy_policy():
+    return(render_template("privacy_policy.html"))
+
+@bp.route("/faq")
+def faq():
+    return(render_template("faq.html"))
 
 
 @bp.route('/sitemap.xml')
