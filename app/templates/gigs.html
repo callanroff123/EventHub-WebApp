@@ -26,7 +26,7 @@
                     <p class='form-label'>
                         {{ form.start_date.label }} <br>{{ form.start_date(class='datepicker', min = current_date) }} {{ form.hidden_tag() }}
                     </p>
-                    <p>    
+                    <p class="form-label">    
                         {{ form.end_date.label }} <br>{{ form.end_date(class='datepicker', min = current_date) }} {{ form.hidden_tag() }}
                     </p>
                     <div class="multiple-fields">
@@ -37,6 +37,15 @@
                             {{ form.genre_filter.label }} <br>{{ form.genre_filter(class="form-control") }} {{ form.hidden_tag() }}
                         </p>
                     </div>
+                    <p class="form-label">    
+                        {{ form.just_in.label }}
+                        {% for subfield in form.just_in %}
+                            <label class="radio-inline">
+                                <br>{{ subfield() }} {{ subfield.label.text }}
+                            </label>
+                        {% endfor %}
+                        {{ form.hidden_tag() }}
+                    </p>
                     <p class='form-label'>
                         {{ form.search_field.label }} <br>{{ form.search_field(size=30) }} {{ form.hidden_tag() }}
                     </p>
@@ -113,16 +122,6 @@
         <br>
         
     </div>
-{% endblock %}
-{% block footer %}
-    <hr>
-    <footer style="background-color:black; width: 100%; color: antiquewhite;">
-        <div class="discalimer" style="padding: 20px;">
-            <h4><b>**Disclaimer</b></h4>
-            <p>The artist matching an event may not always be correct - AI is used to determine the <em>most likely</em> artist given an event title. If your event is listed here and the corresponding artist/s Spotify is incorrect and you'd like to see it change, please log using the form in the <a href="{{ url_for('main.contact') }}">contact</a> page.</p>
-        </div>
-        <br>
-    </footer>
 {% endblock %}
 {% block scripts %}
     <script>

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+{% block styles %}
+{% endblock %}
+{% block content %}
+    <div class="main-container text-colour">
+        <div class="feedback">
+            <h1>Privacy Policy</h1>
+            <hr>
+            <p>Welcome to to Melbourne // Naarm Gigs! Here's all the details on how your privacy is handled:</p>
+            <br>
+            <h3>1. No Personal Data Collection</h3>
+            <p>No collection of any personal info (e.g., name, email or location). No sign-ups, no logins, no tracking of who you are.</p>
+            <br>
+            <h3>2. Basic Analytics</h3>
+            <p>We use basic, privacy-friendly analytics to help understand general usage and improve the site. Nothing, however, which tracks or identifies you personally.</p>
+            <br>
+            <h3>3. External Links</h3>
+            <p>The site links out to third-party platforms (like ticketing and venue sites, Spotify). If you click on them, their privacy policies will apply — so check those if you're curious.</p>
+            <br>
+            <h3>4. Updates</h3>
+            <p>Since we don't collect personal data, there's nothing stored about you. Though if you ever have questions or concerns, feel free to get in touch via the <a href="{{ url_for('main.contact') }}">contact</a> page.</p>
+            <br>
+            <h3>5. Updates</h3>
+            <p>If privacy practices ever change, this page will be updated.</p>
+        </div>
+    </div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}
