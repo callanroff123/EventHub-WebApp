@@ -10,6 +10,8 @@ import smtplib
 from email.message import EmailMessage
 from datetime import datetime
 from zoneinfo import ZoneInfo
+import threading
+from app.tasks import send_contact_email
 from app.main.forms import FilterForm, ContactForm
 from app.main import bp
 from app.utilities.azure_blob_connection import read_from_azure_blob_storage, show_azure_blobs
@@ -131,21 +133,14 @@ def about():
 def contact():
     contact_form = ContactForm()
     if "contact_submit" in request.form and contact_form.validate_on_submit():
-        conn = smtplib.SMTP("smtp.gmail.com")
-        my_email = os.getenv("GMAIL_USER_EMAIL")
-        my_password = os.getenv("GMAIL_APP_PASSWORD")
-        message = EmailMessage()
-        message["From"] = my_email
-        message["To"] = my_email
-        message["subject"] = f"""{contact_form.name.data} ({contact_form.email.data}) has reached out from EventHub."""
-        message.set_content(contact_form.message.data)
-        conn.starttls()
-        conn.login(
-            user = my_email,
-            password = my_password
-        )
-        conn.send_message(message)
-        conn.close()
+        threading.Thread(
+            target = send_contact_email,
+            args = (
+                contact_form.name.data,
+                contact_form.email.data,
+                contact_form.message.data
+            )
+        ).start()
         flash("Message sent!")
         return(redirect(url_for("main.gigs")))
     return(render_template(
