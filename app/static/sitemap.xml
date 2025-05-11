@@ -9,22 +9,42 @@
 
 <url>
   <loc>https://melbourne-gigs.com.au/</loc>
-  <lastmod>2025-05-02T12:10:35+00:00</lastmod>
+  <lastmod>2025-05-11T02:29:53+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
   <loc>https://melbourne-gigs.com.au/index</loc>
-  <lastmod>2025-05-02T12:10:36+00:00</lastmod>
+  <lastmod>2025-05-11T02:29:54+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://melbourne-gigs.com.au/gigs</loc>
-  <lastmod>2025-05-02T12:10:37+00:00</lastmod>
+  <lastmod>2025-05-11T02:29:55+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://melbourne-gigs.com.au/about</loc>
+  <lastmod>2025-05-11T02:29:57+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>https://melbourne-gigs.com.au/contact</loc>
-  <lastmod>2025-05-02T12:10:39+00:00</lastmod>
+  <lastmod>2025-05-11T02:29:58+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://melbourne-gigs.com.au/faq</loc>
+  <lastmod>2025-05-11T02:29:59+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://melbourne-gigs.com.au/terms-of-use</loc>
+  <lastmod>2025-05-11T02:30:00+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>https://melbourne-gigs.com.au/privacy-policy</loc>
+  <lastmod>2025-05-11T02:30:00+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 
