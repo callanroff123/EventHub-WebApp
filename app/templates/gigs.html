@@ -23,18 +23,19 @@
                 <hr>
                 <form action="{{ url_for('main.gigs') }}" method="POST" class="text-colour gig-filter-form">
                     {{ form.csrf_token }}
+                    {{ form.hidden_tag() }}
                     <p class='form-label'>
-                        {{ form.start_date.label }} <br>{{ form.start_date(class='datepicker', min = current_date) }} {{ form.hidden_tag() }}
+                        {{ form.start_date.label }} <br>{{ form.start_date(class='datepicker', min = current_date) }}
                     </p>
                     <p class="form-label">    
-                        {{ form.end_date.label }} <br>{{ form.end_date(class='datepicker', min = current_date) }} {{ form.hidden_tag() }}
+                        {{ form.end_date.label }} <br>{{ form.end_date(class='datepicker', min = current_date) }}
                     </p>
                     <div class="multiple-fields">
                         <p class='form-label'>
-                            {{ form.venue_filter.label }} <br>{{ form.venue_filter(class="form-control") }} {{ form.hidden_tag() }}
+                            {{ form.venue_filter.label }} <br>{{ form.venue_filter(class="form-control") }}
                         </p>
                         <p class='form-label'>
-                            {{ form.genre_filter.label }} <br>{{ form.genre_filter(class="form-control") }} {{ form.hidden_tag() }}
+                            {{ form.genre_filter.label }} <br>{{ form.genre_filter(class="form-control") }}
                         </p>
                     </div>
                     <p class="form-label">    
@@ -47,7 +48,7 @@
                         {{ form.hidden_tag() }}
                     </p>
                     <p class='form-label'>
-                        {{ form.search_field.label }} <br>{{ form.search_field(size=30) }} {{ form.hidden_tag() }}
+                        {{ form.search_field.label }} <br>{{ form.search_field(size=30) }}
                     </p>
                     <div class="gig-filter-submission">
                         <button class='btn btn-primary mb-3' type="submit" name="gig_filter_submit">{{ form.submit.label }}</button>
